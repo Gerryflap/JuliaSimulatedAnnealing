@@ -103,11 +103,12 @@ module SortingExample
     println(result.s)
     println("Energy: ", result.e)
 
-    display(plot(
+    plt = plot(
         result.energies,
         title="Energy of current state per step",
         xlabel="step",
         ylabel="energy",
         legend=false
-    ))
+    )
+    display(plt)
 end
