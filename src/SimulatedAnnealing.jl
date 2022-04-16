@@ -4,15 +4,23 @@ module SimulatedAnnealing
     # Models the current state
     abstract type State end
 
+    # Contains relevant information for the current simulator state
     mutable struct SimState
+        # Current state
         s::State
+        # Current step
         step::Int64
+        # Energy of current state (to avoid re-evaluation)
         e_current::Float64
     end
 
+    # Contains the result of a run
     struct Result
+        # Final state
         s::State
+        # Final energy
         e::Float64
+        # Either nothing, or an array of energy values per step
         energies::Union{Array{Float64}, Nothing}
     end
 
@@ -41,8 +49,10 @@ module SimulatedAnnealing
         s_new = settings.neighbour_fn(simstate.s)
         simstate.step += 1
         temperature = settings.temperature_fn(simstate.step / settings.max_steps)
+
         e_current = simstate.e_current
         e_new = settings.energy_fn(s_new)
+        
         acceptance_probability = p(e_current, e_new, temperature)
         if rand() <= acceptance_probability
             simstate.s = s_new
@@ -50,7 +60,8 @@ module SimulatedAnnealing
         end
     end
 
-    # Runs simulated annealing from s_initial with the given settings
+    # Runs simulated annealing from s_initial with the given settings. 
+    # If collect_energy_vals is set to true, the Results.energies array will be filled with the energy for each step.
     function run_simulated_annealing(s_initial::State, settings::Settings; collect_energy_vals::Bool=false) :: Result
         simstate = SimState(s_initial, 0, settings.energy_fn(s_initial))
 
