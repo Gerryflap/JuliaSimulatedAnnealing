@@ -1,0 +1,7 @@
+name = "SimulatedAnnealing"
+uuid = "2d65f8b7-1b20-4058-bb07-eb82d048feb8"
+authors = ["gerryflap <gerry2211@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
